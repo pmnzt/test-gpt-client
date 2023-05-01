@@ -1,10 +1,8 @@
 let isRequesting = false;
 
-const API_URL = "https://sharegpt.com/api/conversations";
-const PAGE_URL = "https://sharegpt.com/c/";
+const API_URL = "http://localhost:3000/api/items";
+const PAGE_URL = "http://localhost:3000/v";
 
-// const API_URL = "http://localhost:3000/api/conversations";
-// const PAGE_URL = "http://localhost:3000/c/";
 
 function init() {
   const shareButton = createBtn();
@@ -88,16 +86,21 @@ function init() {
       }
     }
 
-    const res = await fetch(API_URL, {
+     chrome.runtime.sendMessage({ action: 'get-user-cookie' }, async function(response) {
+      const userCookie = response.cookieValue; 
+      const userCookieJSON = JSON.parse(userCookie);      
+
+       const res = await fetch(API_URL, {
       body: JSON.stringify(conversationData),
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "use": "refresh_token", "authorization": `token ${userCookieJSON.refreshToken}` },
       method: "POST",
     }).catch((err) => {
       isRequesting = false;
       alert(`Error saving conversation: ${err.message}`);
     });
+    
     const { id } = await res.json();
-    const url = PAGE_URL + id;
+    const url = PAGE_URL + "?id=" + id;
 
     window.open(url, "_blank");
 
@@ -108,6 +111,12 @@ function init() {
       shareButton.style.cursor = "pointer";
       isRequesting = false;
     }, 1000);
+
+
+  });
+
+
+    
   });
 }
 
@@ -123,6 +132,24 @@ function showIfNotLoading(loadingElement, newElement) {
     }
   }, 100);
 }
+
+
+// function setCookie(name, value) {
+//   const cookieValue = encodeURIComponent(value); // Encode the value to make sure special characters are properly encoded
+//   const cookieName = name + '=' + cookieValue + '; path=/'; // Construct the cookie string with the name, value, and path
+
+//   const cookieValueIndex = document.cookie.indexOf(name + '=');
+
+//   if(cookieValueIndex >= 0) {
+//     const cookieValueEndIndex = document.cookie.indexOf(';', cookieValueIndex);
+//     const cookieValueStart = cookieValueIndex + name.length + 1;
+//     const cookieValueEnd = cookieValueEndIndex >= 0 ? cookieValueEndIndex : document.cookie.length;
+//     const cookieString = document.cookie.substring(0, cookieValueStart) + cookieValue + document.cookie.substring(cookieValueEnd);
+//     document.cookie = cookieString; // Set the updated cookie string
+//   } else {
+//     document.cookie = cookieName; // Set the cookie with the new value
+//   }
+// }
 
 function getAvatarImage() {
   // Create a canvas element
