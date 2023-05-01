@@ -1,7 +1,7 @@
 let isRequesting = false;
 
-const API_URL = "http://localhost:3000/api/items";
-const PAGE_URL = "http://localhost:3000/v";
+const API_URL = "https://feline-pyrite-dawn.glitch.me/api/items";
+const PAGE_URL = "https://feline-pyrite-dawn.glitch.me/v";
 
 
 function init() {

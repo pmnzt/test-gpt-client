@@ -1,4 +1,4 @@
-fetch("http://localhost:3000/session").then(async (res) => {
+fetch("https://feline-pyrite-dawn.glitch.me/session").then(async (res) => {
   const json = await res.json();
   document.querySelector("#loading-div").style.display = "none";
   if (json.user) {

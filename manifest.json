@@ -29,7 +29,7 @@
     }
   ],
   "host_permissions": [
-  "http://localhost:3000/*"
+  "https://feline-pyrite-dawn.glitch.me/*"
   ],
   "permissions": [
     "cookies"      

@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'get-user-cookie') {
-    chrome.cookies.get({ url: 'http://localhost:3000/', name: 'user' }, function(cookie) {
+    chrome.cookies.get({ url: 'https://feline-pyrite-dawn.glitch.me/', name: 'user' }, function(cookie) {
       if (cookie) {
         // The cookie was found
         sendResponse({ cookieValue: decodeURIComponent(cookie.value) });
